@@ -3,19 +3,6 @@
     "rss_backend": {
       "main": "src/rss_backend/main.mo",
       "type": "motoko"
-    },
-    "rss_frontend": {
-      "dependencies": [
-        "rss_backend"
-      ],
-      "frontend": {
-        "entrypoint": "src/rss_frontend/src/index.html"
-      },
-      "source": [
-        "src/rss_frontend/assets",
-        "dist/rss_frontend/"
-      ],
-      "type": "assets"
     }
   },
   "defaults": {
