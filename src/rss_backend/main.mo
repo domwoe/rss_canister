@@ -1,6 +1,8 @@
 import Array "mo:base/Array";
+import Int "mo:base/Int";
 import Iter "mo:base/Iter";
 import Text "mo:base/Text";
+import Time "mo:base/Time";
 
 actor {
 
@@ -8,6 +10,14 @@ actor {
     title : Text;
     description : Text;
   };
+
+  type FeedItemWithTimestamp = {
+    timestamp: Int;
+    title : Text;
+    description : Text;
+  };
+
+
 
   type HeaderField = (Text, Text);
 
@@ -28,16 +38,24 @@ actor {
 
   var maxFeedLength : Nat = 20;
   var emptyFeedItem = {
+    timestamp = 0;
     title = "";
     description = "";
   };
-  var feed : [var FeedItem] = Array.init<FeedItem>(maxFeedLength - 1, emptyFeedItem);
+  var feed : [var FeedItemWithTimestamp] = Array.init<FeedItemWithTimestamp>(maxFeedLength - 1, emptyFeedItem);
   var currentIndex : Nat = 0;
 
-  var feedHeader : Text = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" # "<rss version=\"2.0\">" # "<channel>" # "<title>Canister Feed</title>" # "<link>https://" # MY_CANISTER_ID # ".raw.ic0.app</link>" # "<description>Example of an RSS feed served by a canister</description><atom:link href=\"https://" # MY_CANISTER_ID # ".raw.ic0.app/feed.rss\" rel=\"self\" type=\"application/rss+xml\" />";
+  var feedHeader : Text = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" # "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" # "<channel>" # "<title>Canister Feed</title>" # "<link>https://" # MY_CANISTER_ID # ".raw.ic0.app</link>" # "<description>Example of an RSS feed served by a canister</description><atom:link href=\"https://" # MY_CANISTER_ID # ".raw.ic0.app/feed.rss\" rel=\"self\" type=\"application/rss+xml\" />";
   var feedEnd : Text = "</channel></rss>";
 
-  public func add_item(item : FeedItem) {
+  public func add_item(it : FeedItem) {
+
+    var item = {
+      timestamp = Time.now();
+      title = it.title;
+      description = it.description;
+    };
+
     feed[currentIndex] := item;
 
     if (currentIndex < maxFeedLength - 1) {
@@ -65,9 +83,10 @@ actor {
 
         var rssFeed : Text = feedHeader;
 
-        for (item in Iter.fromArrayMut<FeedItem>(feed)) {
+        for (item in Iter.fromArrayMut<FeedItemWithTimestamp>(feed)) {
           if (item.title != "") {
-            rssFeed := rssFeed # "<item><title>" # item.title # "</title><link>https://internetcomputer.org</link><description>" # item.description # "</description></item>";
+            var guid = 
+            rssFeed := rssFeed # "<item><title>" # item.title # "</title><link>https://internetcomputer.org</link><description>" # item.description # "</description><guid>" # Int.toText(item.timestamp) #"</guid></item>";
           };
         };
 
