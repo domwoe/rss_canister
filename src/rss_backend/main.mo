@@ -86,7 +86,7 @@ actor {
         for (item in Iter.fromArrayMut<FeedItemWithTimestamp>(feed)) {
           if (item.title != "") {
             var guid = 
-            rssFeed := rssFeed # "<item><title>" # item.title # "</title><link>https://internetcomputer.org</link><description>" # item.description # "</description><guid>" # Int.toText(item.timestamp) #"</guid></item>";
+            rssFeed := rssFeed # "<item><title>" # item.title # "</title><link>https://internetcomputer.org</link><description>" # item.description # "</description><guid isPermaLink=\"false\">" # Int.toText(item.timestamp) #"</guid></item>";
           };
         };
 
