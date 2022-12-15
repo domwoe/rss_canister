@@ -1,6 +1,7 @@
 import Array "mo:base/Array";
 import Int "mo:base/Int";
 import Iter "mo:base/Iter";
+import Principal "mo:base/Principal";
 import Text "mo:base/Text";
 import Time "mo:base/Time";
 
