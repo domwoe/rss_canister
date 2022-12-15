@@ -42,9 +42,6 @@ actor RssFeed {
   var feed : [var FeedItemWithTimestamp] = Array.init<FeedItemWithTimestamp>(maxFeedLength - 1, emptyFeedItem);
   var currentIndex : Nat = 0;
 
-  var feedHeader : Text = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" # "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" # "<channel>" # "<title>Canister Feed</title>" # "<link>https://" # MY_CANISTER_ID # ".raw.ic0.app</link>" # "<description>Example of an RSS feed served by a canister</description><atom:link href=\"https://" # MY_CANISTER_ID # ".raw.ic0.app/feed.rss\" rel=\"self\" type=\"application/rss+xml\" />";
-  var feedEnd : Text = "</channel></rss>";
-
   public func add_item(it : FeedItem) {
 
     var item = {
