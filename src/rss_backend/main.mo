@@ -32,8 +32,6 @@ actor RssFeed {
     body : Blob;
   };
 
-  var MY_CANISTER_ID: Text = "vo3eu-eyaaa-aaaak-qawba-cai";
-
   var maxFeedLength : Nat = 20;
   var emptyFeedItem = {
     timestamp = 0;
