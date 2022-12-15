@@ -4,7 +4,7 @@ import Iter "mo:base/Iter";
 import Text "mo:base/Text";
 import Time "mo:base/Time";
 
-actor {
+actor RssFeed {
 
   type FeedItem = {
     title : Text;
@@ -16,8 +16,6 @@ actor {
     title : Text;
     description : Text;
   };
-
-
 
   type HeaderField = (Text, Text);
 
@@ -70,8 +68,13 @@ actor {
     let ?path = Text.split(req.url, #char '?').next();
     switch (req.method, path) {
       case ("GET", "/") {
+      
+        var id = Principal.toText(Principal.fromActor(RssFeed));
+    
+        var feedHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" # "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">" # "<channel>" # "<title>Canister Feed</title>" # "<link>https://" # id # ".raw.ic0.app</link>" # "<description>Example of an RSS feed served by a canister</description><atom:link href=\"https://" # id # ".raw.ic0.app/feed.rss\" rel=\"self\" type=\"application/rss+xml\" />";
+        var feedEnd : Text = "</channel></rss>";
 
-        var html: Text = "<html><head><title>Subscribe to Canister Feed</title></head><body><a href=\"https://" # MY_CANISTER_ID # ".raw.ic0.app/feed.rss\">Suscribe to canister feed</a></body></html>";
+        var html: Text = "<html><head><title>Subscribe to Canister Feed</title></head><body><a href=\"https://" # id # ".raw.ic0.app/feed.rss\">Suscribe to canister feed</a></body></html>";
         {
           status_code = 200;
           headers = [("content-type", "text/html; charset=UTF-8")];
